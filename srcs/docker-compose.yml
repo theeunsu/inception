@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+    mariadb:
+        container_name: mariadb
+        build:
+            context: ./requirements/mariadb
+        
+    nginx:
+        build: ./requirements/nginx
+        ports:
+            - "443:443"
+        volumes:
+            - ./data
+
+
+    wordpress:
