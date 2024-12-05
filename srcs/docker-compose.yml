@@ -1,17 +1,28 @@
 version: "3.8"
 
-services:
-    mariadb:
-        container_name: mariadb
-        build:
-            context: ./requirements/mariadb
-        
+# default network: bridge
+networks:
+    default:
+        driver: bridge
+
+services:    
     nginx:
-        build: ./requirements/nginx
+        image: nginx:42 # 42 is the tag of the image
+        build: 
+            context: ./requirements/nginx
+            dockerfile: Dockerfile
+        container_name: nginx
         ports:
             - "443:443"
         volumes:
-            - ./data
+            - 
+    mariadb:
+        container_name: mariadb
+        image: 
+        build:
+            context: ./requirements/mariadb
+            dockerfile: Dockerfile
+
 
 
     wordpress:
