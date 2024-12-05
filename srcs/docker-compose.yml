@@ -7,7 +7,9 @@ networks:
 
 services:    
     nginx:
-        image: nginx:42 # 42 is the tag of the image
+        depends_on:
+            - wordpress
+        image: nginx:eahn # eahn is the tag of the image
         build: 
             context: ./requirements/nginx
             dockerfile: Dockerfile
@@ -15,14 +17,53 @@ services:
         ports:
             - "443:443"
         volumes:
-            - 
+            - wordpress:/var/www/html
+        networks:
+            - default
+        env_file:
+            - .env
+        restart: always
+
+    wordpress:
+        depends_on:
+            - mariadb
+        image: wordpress:eahn
+        build:
+            context: ./requirements/wordpress
+            dockerfile: Dockerfile
+        container_name: wordpress
+        volumes:
+            - wordpress:/var/www/html
+        networks:
+            - default
+        env_file:
+            - .env
+        restart: always
+
     mariadb:
         container_name: mariadb
-        image: 
+        image: mariadb:eahn
         build:
             context: ./requirements/mariadb
             dockerfile: Dockerfile
+        volumes:
+            - mariadb:/var/lib/mysql
+        networks:
+            - default
+        env_file:
+            - .env
+        restart: always
 
-
-
+volumes:
     wordpress:
+        driver: local
+        driver_opts:
+            device: /Users/eunsu/data/wordpress # TBC when using it at school
+            type: none
+            o: bind
+    mariadb:
+        driver: local
+        driver_opts:
+            device: /Users/eunsu/data/mariadb # TBC when using it at school
+            type: none
+            o: bind
