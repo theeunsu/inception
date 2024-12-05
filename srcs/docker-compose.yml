@@ -58,12 +58,12 @@ volumes:
     wordpress:
         driver: local
         driver_opts:
-            device: /Users/eunsu/data/wordpress # TBC when using it at school
+            device: /Users/eunsu/data/wordpress # Should create folders and change path when using it at school (mkdir -p ..)
             type: none
             o: bind
     mariadb:
         driver: local
         driver_opts:
-            device: /Users/eunsu/data/mariadb # TBC when using it at school
+            device: /Users/eunsu/data/mariadb # Should create folders and change path when using it at school (mkdir -p ..) -p means parent
             type: none
             o: bind
