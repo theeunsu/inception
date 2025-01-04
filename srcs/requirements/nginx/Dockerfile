@@ -1,8 +1,8 @@
-# Description: Nginx image with alpine base image (Penultimate version)
-From alpine:3.20.3
+# Nginx image with alpine base image (Penultimate version)
+FROM alpine:3.20
 
 # Install necessary packages
-RUN apk update && apd add --no-cache nginx openssl
+RUN apk update && apk add --no-cache nginx openssl
 
 # Copy TLS setup script into the container
 COPY ./tools/nginx_init.sh /tmp/nginx_init.sh

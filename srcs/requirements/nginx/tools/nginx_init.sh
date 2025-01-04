@@ -9,7 +9,7 @@
 mkdir -p "$(dirname "$PATH_SSL_KEY")"
 
 # Generate a self-signed key and certificate if not already present
-if [ ! -f "$PATH_SSL_KEY"] || [ ! -f "$PATH_SSL_CERT" ]; then
+if [ ! -f "$PATH_SSL_KEY" ] || [ ! -f "$PATH_SSL_CERT" ]; then
 	echo "Generating self-signed SSL certificate..."
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 	-keyout "$PATH_SSL_KEY" \
