@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# Load env variables or set defaults if not provided
-: "${DB_NAME:=default_database}"
-: "${DB_USER:=default_user}" 
-: "${DB_PASSWORD:=default_password}" 
-: "${DB_ROOT_PASSWORD:=default_root_password}" 
+# # Load env variables or set defaults if not provided
+# : "${DB_NAME:=default_database}"
+# : "${DB_USER:=default_user}" 
+# : "${DB_PASSWORD:=default_password}" 
+# : "${DB_ROOT_PASSWORD:=default_root_password}" 
 
-echo "Starting MariaDB initialization..."
+# echo "Starting MariaDB initialization..."
 
 # Check and create necessary directories if they are missing
 if [ ! -d "/var/lib/mysql/mysql" ]; then
