@@ -6,6 +6,7 @@ ENV PHP_VERSION=82
 ENV PHP_FPM_PORT=9000
 
 # Install PHP, PHP extensions, other necessary packages
+# Update PHP-FPM configuration to listen on the specified port
 RUN apk update && apk add --no-cache \
 	php${PHP_VERSION} \
 	php${PHP_VERSION}-fpm \
@@ -16,4 +17,8 @@ RUN apk update && apk add --no-cache \
 	wget \
 	unzip \
 	mariadb-client && \
+    sed -i "s|listen = .*|listen = ${PHP_FPM_PORT}|g" /etc/php${PHP_VERSION}/php-fpm.d/www.conf && \
+	sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php${PHP_VERSION}/php-fpm.d/www.conf && \
+	sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php${PHP_VERSION}/php-fpm.d/www.conf && \
+	rm -rf /var/cache/apk/*
 	
