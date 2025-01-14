@@ -1,4 +1,4 @@
-# Nginx image with alpine base image (Penultimate version)
+# Mariadb image with alpine base image (Penultimate version)
 FROM alpine:3.20
 
 # Install necessary packages: MariaDB and its client
