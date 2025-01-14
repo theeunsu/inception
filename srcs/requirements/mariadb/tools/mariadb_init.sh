@@ -1,43 +1,30 @@
 #!/bin/sh
 
-# # Load env variables or set defaults if not provided
-# : "${DB_NAME:=default_database}"
-# : "${DB_USER:=default_user}" 
-# : "${DB_PASSWORD:=default_password}" 
-# : "${DB_ROOT_PASSWORD:=default_root_password}" 
+# Initialize MariaDB database if it doesn't already exist
+if [ ! -d "/var/lib/mysql/${DB_NAME}" ]; then
+    echo "Initializing MariaDB database..."
+    
+    # Run MariaDB bootstrap process to set up the initial database and users
+    mariadbd --user=mysql --bootstrap --console <<-EOSQL
+        USE mysql;
 
-# echo "Starting MariaDB initialization..."
+        -- Create the WordPress database
+        CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
 
-# Check and create necessary directories if they are missing
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "MariaDB data directory not found. Initializing..."
-    mkdir -p /var/lib/mysql /var/run/mysqld
-    chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
+        -- Create the WordPress user and grant privileges
+        CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+        GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'%';
 
-	# Initialize MariaDB data directory
-	mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+        -- Update root user password for localhost
+        ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
 
-	echo "Starting temporary MariaDB server for configuration..."
-	mysqld_safe --skip-networking &
-	sleep 5
-
-	echo "Configuring MariaDB..."
-	mysql -u root <<-EOSQL
-		ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
-		DELETE FROM mysql.user WHERE USER='';
-		DROP DATABASE IF EXISTS test; 
-		CREATE DATABASE ${DB_NAME};
-		CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
-		GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
-		FLUSH PRIVILEGES;
-	EOSQL
-
-	echo "Shutting down temporary MariaDB server..."
-	mysqladmin -u root -p"${DB_ROOT_PASSWORD}" shutdown
+        -- Apply changes
+        FLUSH PRIVILEGES;
+EOSQL
 else
-	echo "MariaDB data directory found. Skipping initialization..."
+    echo "MariaDB database directory already exists. Skipping initialization..."
 fi
 
-# Start MariaDB server in foreground mode
+# Start MariaDB in foreground mode
 echo "Starting MariaDB server..."
-exec mysqld_safe
+exec mariadbd --user=mysql --console
