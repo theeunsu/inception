@@ -12,6 +12,11 @@ elif [ ! -f "wp-config-sample.php" ]; then
     exit 1
 fi
 
+echo ${DB_NAME}
+echo ${DB_USER}
+echo ${DB_PASSWORD}
+echo ${DB_ROOT_PASSWORD}
+
 # Replace database credentials in wp-config.php
 sed -i "s|'DB_NAME', '.*'|'DB_NAME', '${DB_NAME}'|g" wp-config.php
 sed -i "s|'DB_USER', '.*'|'DB_USER', '${DB_USER}'|g" wp-config.php
