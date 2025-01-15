@@ -1,5 +1,11 @@
 #!/bin/sh
 
+
+echo ${DB_NAME}
+echo ${DB_USER}
+echo ${DB_PASSWORD}
+echo ${DB_ROOT_PASSWORD}
+
 # Initialize MariaDB database if it doesn't already exist
 if [ ! -d "/var/lib/mysql/${DB_NAME}" ]; then
     echo "Initializing MariaDB database..."
@@ -8,17 +14,13 @@ if [ ! -d "/var/lib/mysql/${DB_NAME}" ]; then
     mariadbd --user=mysql --bootstrap --console <<-EOSQL
         USE mysql;
 
-        -- Create the WordPress database
         CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
 
-        -- Create the WordPress user and grant privileges
         CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
         GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'%';
 
-        -- Update root user password for localhost
         ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
 
-        -- Apply changes
         FLUSH PRIVILEGES;
 EOSQL
 else

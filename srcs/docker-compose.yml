@@ -57,11 +57,11 @@ services:
 volumes:
     wp:
         driver_opts:
-            device: /Users/eunsu/data/wp # Should create folders (data/wp) and change path when using it at school (mkdir -p ..)
+            device: /Users/eahn/data/wp # Should create folders (data/wp) and change path when using it at school (mkdir -p ..)
             type: none
             o: "bind"
     db:
         driver_opts:
-            device: /Users/eunsu/data/db # Should create folders (data/db) and change path when using it at school (mkdir -p ..) -p means parent
+            device: /Users/eahn/data/db # Should create folders (data/db) and change path when using it at school (mkdir -p ..) -p means parent
             type: none
             o: "bind"
