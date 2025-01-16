@@ -2,7 +2,8 @@
 FROM alpine:3.20
 
 # Install necessary packages
-RUN apk add --no-cache nginx openssl
+RUN apk update && apk upgrade \
+&& apk add --no-cache nginx openssl
 
 # Copy initialization script and configuration files
 COPY ./tools/nginx_init.sh /tmp/nginx_init.sh
