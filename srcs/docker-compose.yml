@@ -58,11 +58,11 @@ volumes:
     driver_opts:
       o: "bind"
       type: none
-      device: ~/data/database
+      device: /home/eahn/data/database
   wordpress:
     name: wordpress
     driver: local
     driver_opts:
       o: "bind"
       type: none
-      device: ~/data/wordpress
+      device: /home/eahn/data/wordpress
