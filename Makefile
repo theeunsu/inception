@@ -6,7 +6,7 @@
 #    By: eahn <eahn@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/03 22:12:08 by eahn              #+#    #+#              #
-#    Updated: 2025/01/16 00:58:49 by eahn             ###   ########.fr        #
+#    Updated: 2025/01/16 12:13:20 by eahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,10 +18,10 @@ COMPOSE_FILE = ./srcs/docker-compose.yml
 all: build
 
 up:
-	docker-compose -f $(COMPOSE_FILE) up
+	docker-compose -f $(COMPOSE_FILE) up -d
 
 build:
-	docker-compose -f $(COMPOSE_FILE) up --build
+	docker-compose -f $(COMPOSE_FILE) up -d --build
 
 stop:
 	docker-compose -f $(COMPOSE_FILE) stop
